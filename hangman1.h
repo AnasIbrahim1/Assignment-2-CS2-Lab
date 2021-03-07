@@ -3,6 +3,14 @@
 
 #include <QMainWindow>
 #include <string>
+#include <QMainWindow>
+#include<QPainter>
+#include<QGraphicsItem>
+#include<QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QGraphicsEllipseItem>
+#include<QTimer>
+//#include<QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class hangman1; }
@@ -14,6 +22,9 @@ class hangman1 : public QMainWindow
 
 public:
     hangman1(QWidget *parent = nullptr);
+    void inc();
+    int getcount();
+    void shape();
     ~hangman1();
 
 private slots:
@@ -73,11 +84,19 @@ private slots:
 
    // QString ctos(char);
 
+    void on_word_linkActivated(const QString &link);
+
 private:
     Ui::hangman1 *ui;
     QString word = "Hangman";
     std::string s_word;
     bool* CheckLetter = new bool[26];
     QString displayedWord;
+    //QLabel *label;
+    QGraphicsScene* scene;
+    QGraphicsEllipseItem* ellipse; //we will draw an ellipse
+    QGraphicsLineItem* Line;
+    QGraphicsRectItem* rectangle; //we are not using it, just an
+    static int count;
 };
 #endif // HANGMAN1_H
