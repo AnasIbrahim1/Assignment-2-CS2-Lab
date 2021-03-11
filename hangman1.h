@@ -11,7 +11,10 @@
 #include <QGraphicsEllipseItem>
 #include<QTimer>
 //#include<QLabel>
-
+#include<fstream>
+#include<iostream>
+#include<string>
+using namespace std;
 QT_BEGIN_NAMESPACE
 namespace Ui { class hangman1; }
 QT_END_NAMESPACE
@@ -21,6 +24,10 @@ class hangman1 : public QMainWindow
     Q_OBJECT
 
 public:
+     string word;
+     void KnowinTheSize(int& number);
+     string* FillingTheArray(int number);
+     string knowinTheWord(string* array, int number);
     hangman1(QWidget *parent = nullptr);
     void inc();
     int getcount();
@@ -88,7 +95,6 @@ private slots:
 
 private:
     Ui::hangman1 *ui;
-    QString word = "Hangman";
     std::string s_word;
     bool* CheckLetter = new bool[26];
     QString displayedWord;

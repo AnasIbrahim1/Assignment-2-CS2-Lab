@@ -1,5 +1,9 @@
 #include "hangman1.h"
 #include "ui_hangman1.h"
+#include<fstream>
+#include<iostream>
+#include<string>
+using namespace std;
 int hangman1::count=0;
 
 hangman1::hangman1(QWidget *parent)
@@ -9,12 +13,16 @@ hangman1::hangman1(QWidget *parent)
     ui->setupUi(this);
     scene = new QGraphicsScene(this);
        ui->view->setScene(scene);
+       int number=0;
+       KnowinTheSize(number);
+       string* array=FillingTheArray(number);
+       word= knowinTheWord(array, number);
     for (int i = 0; i < 26; i++)
         CheckLetter[i] = 1;
     for(int i = 0; i < word.length(); i++)
         displayedWord += "_";
     ui->label->setText(displayedWord);
-    s_word = word.toStdString();
+    s_word = word;
     ui->label_A->setVisible(0);
     ui->label_B->setVisible(0);
     ui->label_C->setVisible(0);
@@ -299,6 +307,7 @@ void hangman1::shape()
         break;
     case 8:
     Line = scene->addLine(0, -100, 0, -50, Blackpen);
+    exit(1);
         break;
 }
 }
@@ -309,5 +318,38 @@ void hangman1::inc()
 int hangman1:: getcount()
 {
     return count;
+}
+void hangman1::KnowinTheSize(int&number)
+{
+    ifstream object;
+    string line;
+    object.open("Words.txt");
+    while (getline(object,line))
+    {
+        number++;
+    }
+    object.close();
+}
+string* hangman1::FillingTheArray(int number)
+{
+    string line;
+    string* array = new string[number];
+    ifstream object;
+    object.open("Words.txt");
+    for (int i = 0; i < number; i++)
+    {
+
+        if (getline(object, line))
+        {
+            array[i] = line;
+        }
+    }
+    object.close();
+    return array;
+}
+string hangman1::knowinTheWord(string *array, int number)
+{
+    srand(time(0));
+        return array[rand()%number+0];
 }
 
