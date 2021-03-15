@@ -1,6 +1,5 @@
 #include "hangman1.h"
 #include "ui_hangman1.h"
-
 hangman1::hangman1(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::hangman1)
@@ -15,10 +14,13 @@ hangman1::hangman1(QWidget *parent)
     ui->label->setText(displayedWord);
     spaceCount = wordLeng;
     labelsVisibility(0); // all labels above the buttons are not visible initially
+    player = new QMediaPlayer(); // initialize the player for playing music in the rest of the code
 }
 
 hangman1::~hangman1() {
     delete ui;
+    delete scene;
+    delete player;
 }
 
 // action when clicking the buttons
@@ -197,6 +199,11 @@ void hangman1::checkLetter(const QString& letter) {
         if(letter1 == letter2) {
             displayedWord[i] = word[i]; // displaying the letter that was found on the screen
             spaceCount--;
+            if (!found) {
+                // put the directory of the music with the same name when cloning the project
+                player->setMedia(QUrl("C:/Users/AUC/Desktop/Spring 2021/CS2 Lab/QT Projects/Assignment 2 CS2 Lab again/Assignment-2-CS2-Lab/esm_5_wickets_sound_fx_arcade_casino_kids_mobile_app.mp3"));
+                player->play();
+            }
             found = true;
         }
     }
@@ -272,12 +279,17 @@ void hangman1::losing() {
     QColor color = "red";
     ui->status->setText("<font color='red'>You lost!</font>");
     close();
+    player->setMedia(QUrl("C:/Users/AUC/Desktop/Spring 2021/CS2 Lab/QT Projects/Assignment 2 CS2 Lab again/Assignment-2-CS2-Lab/esm_8_bit_game_over_1_arcade_80s_simple_alert_notification_game.mp3"));
+    player->play();
 }
+
 
 void hangman1::winning() {
     QColor color = "green";
     ui->status->setText("<font color='green'>You won!</font>");
     close();
+    player->setMedia(QUrl("C:/Users/AUC/Desktop/Spring 2021/CS2 Lab/QT Projects/Assignment 2 CS2 Lab again/Assignment-2-CS2-Lab/sound_ex_machina_Applause,+Clapping,+Crowd+Ambience.mp3"));
+    player->play();
 }
 
 void hangman1::drawShape() {
@@ -319,20 +331,23 @@ void hangman1::drawShape() {
 void hangman1::wrongLetter() {
     mistakesNum++;
     drawShape();
+    if (mistakesNum != 9) {
+        player->setMedia(QUrl("C:/Users/AUC/Desktop/Spring 2021/CS2 Lab/QT Projects/Assignment 2 CS2 Lab again/Assignment-2-CS2-Lab/app_alert_tone_remove_delete_002.mp3")); // or give it the address
+        player->play();
+    }
 }
 
 void hangman1::getWord() {
     srand(time(0));
     int number;
     ifstream wordsFile;
-    wordsFile.open("C:/Users/AUC/Desktop/Spring 2021/CS2 Lab/QT Projects/Assignment 2 Work/Words.txt");
+    wordsFile.open("C:/Users/AUC/Desktop/Spring 2021/CS2 Lab/QT Projects/Assignment 2 CS2 Lab again/Assignment-2-CS2-Lab/Words.txt");
     // put the directory of the file of input that you want for input
     wordsFile >> number;
     // note that the format of the file includes having a number of words that you are going to have for input
     // and then the words that the program chooses randomly from
     int randomNumber = rand() % number;
-    for (int i = 0; i < number; i++)
-    {
+    for (int i = 0; i < number; i++) {
         wordsFile >> word;
         if (i == randomNumber) break;
     }

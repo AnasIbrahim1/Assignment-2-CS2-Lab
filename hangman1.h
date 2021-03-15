@@ -1,6 +1,6 @@
 #ifndef HANGMAN1_H
 #define HANGMAN1_H
-
+#include <QMediaPlayer>
 #include<fstream>
 #include<iostream>
 #include <QDebug>
@@ -72,5 +72,6 @@ private:
     QGraphicsLineItem* Line;
     int mistakesNum = 0; // number of mistakes the user/player made
     int spaceCount = 0; // number of spaces remaining in the displayed word
+    QMediaPlayer* player; // = new QMediaplayer(); for playing music
 };
 #endif // HANGMAN1_H
